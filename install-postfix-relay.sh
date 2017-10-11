@@ -17,7 +17,9 @@ if [[ -n $USERNAME && -n $PASSWORD && -n $MYNETWORKS && -n $RELAY_HOST && -n $HO
 fi
 
 if [ -z "$1" ]; then
-    exec /usr/lib/postfix/sbin/master -c /etc/postfix/ -d
+    service syslog-ng start
+    service postfix start
+    tail -F /var/log/mail.log
 fi
 
 exec "$@"
