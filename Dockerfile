@@ -1,21 +1,23 @@
-FROM debian:stretch
+FROM debian:latest
+MAINTAINER Ondrej Vasko
 
 ENV DEBIAN_FRONTEND noninteractive
-ENV LANG en_US.utf8
 
 RUN apt-get update && apt-get install -y \
   locales \
   postfix \
+  supervisor \
   syslog-ng \
-  syslog-ng-core \
-  && rm -rf /var/lib/apt/lists/*
+  syslog-ng-core 
 
+RUN rm -rf /var/lib/apt/lists/* 
 RUN localedef \
   -i en_US \
   -c \
   -f UTF-8 \
   -A /usr/share/locale/locale.alias \
   en_US.UTF-8
+ENV LANG en_US.utf8
 
 RUN sed -i -E 's/^(\s*)system\(\);/\1unix-stream("\/dev\/log");/' /etc/syslog-ng/syslog-ng.conf
 

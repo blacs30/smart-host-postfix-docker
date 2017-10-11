@@ -1,28 +1,30 @@
 # Postfix Smart Host Docker
 
-Smart Host (or Relay Host) is a server which routes all outgoing messages to specified remote domain. You can use it as a mail server for applications which do not support SASL authentication or for other needs.
+Smart Host (or Relay Host) is server which routes all outgoing messages to specified remote domain.
+You can use it as mail server for applications which do not support SASL authentication or for other needs.
 
-Customization of variable parameters such as relay server, mail account credentials and allowed IP addresses or networks is done using docker environment variables or configuration file.
+Customization of variable parameters as relay server, mail account credentials and allowed IP addresses or networks is done with docker environment variables.
+Installation
 
 ## Installation
 
 For full installation use:
 
-```bash
+```
 git clone https://github.com/Vnet-as/smart-host-postfix-docker.git
 cd smart-host-postfix-docker
-docker build -t lirt/smart-host-postfix-docker-local .
+docker build -t lirt/smart-host-postfix-docker .
 ```
 
-Or download docker image from DockerHub with command:
+Or download docker image from dockerhub with:
 
-```bash
+```
 docker pull lirt/smart-host-postfix-docker
 ```
 
-## Docker environment variables
+## Running
 
-You can run smart host with following docker environment variables (note that all environment variables are mandatory):
+Run with following environment variables:
 
 - **HOSTNAME**: hostname for this docker smart host (eg. server.example.com)
 - **RELAY_HOST**: mail server where we need to authenticate user account (eg. mail.example.com)
@@ -32,23 +34,13 @@ You can run smart host with following docker environment variables (note that al
 
 ## Example run
 
-Example run with environment variables:
-
-```bash
-docker run \
-    -h smarthost.example.com \
-    -e HOSTNAME=smarthost.example.com \
-    -e RELAY_HOST=mail.example.com \
-    -e USERNAME=relay-acc@example.com \
-    -e PASSWORD=abcd1234 \
-    -e MYNETWORKS="172.20.100.0/24 172.20.101.12 172.20.101.13" \
-    -d lirt/smart-host-postfix-docker
 ```
-
-For using custom postfix configuration mounted with docker volume there is directory `postfix` with sample configuration files. Example run with configuration files mounted as docker volume:
-
-```bash
 docker run \
-    -v <ABS_PATH_TO_POSTFIX_CF_DIR>:/etc/postfix \
-    -d lirt/smart-host-postfix-docker
+   -h smarthost.example.com \
+   -e HOSTNAME=smarthost.example.com \
+   -e RELAY_HOST=mail.example.com \
+   -e USERNAME=relay-acc@example.com \
+   -e PASSWORD=abcd1234 \
+   -e MYNETWORKS="172.20.100.0/24 172.20.101.12 172.20.101.13" \
+   -d lirt/smart-host-postfix-docker
 ```
